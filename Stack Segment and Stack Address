@@ -1,0 +1,132 @@
+//Objective: Push and pop instructions and observe the change of the ESP value. 
+
+//StackAppTemp.cpp
+#include <iostream>
+#include <Windows.h> 
+#include <time.h> 
+
+using namespace std;
+#define size 6 //can also be declared within the main ()
+
+int main() {
+
+	// Display year and month 
+	SYSTEMTIME a;
+	GetLocalTime(&a);
+	cout << "Year: " << a.wYear << endl;
+	cout << "Month: " << a.wMonth << endl;
+	cout << "Iqra Khan " << endl << endl;
+
+	int i; //used for the index
+	int arr_data[size];  // random data
+	int arr_push[size]; // data to store onto stack 
+	int arr_pop[size];   // data to popped off from the stack
+	int stack_addr_push[size];//the list of the ESP after push instruction is executed
+	int stack_addr_pop[size];//the list of the ESP after the pop instruction
+
+	int espvalue; // to hold the ESP value
+	int temp = 0;
+	int num; // even number 
+	int count = 0;
+
+	srand(time(0));  //randomize seed
+	//for (i=0; i< size; i++)
+	while (count < size)
+	{
+		num = rand() % 100;
+		if (num % 2 == 0)
+		{
+			arr_data[count] = num;  // even random number 0-100
+			count++;
+		}
+	}
+	cout << "Generate even random numbers stored at the array" << endl;
+	for (i = 0; i < count; i++)
+	{
+		cout << arr_data[i] << " ";
+	}
+	cout << endl;
+	cout << " =================== PUSH ===================" << endl;
+	cout << "------------------- save initial ESP -------" << endl;
+	_asm
+	{
+		mov espvalue, ESP;
+	}
+
+	cout << "The adress before the Push is:  " << espvalue << endl;
+
+	for (i = 0; i < size; i++) {
+		temp = arr_data[i];
+		_asm
+		{
+			mov EAX, temp;
+			push EAX;
+			mov espvalue, ESP;
+			mov temp, EAX;
+		}
+		arr_push[i] = temp;
+		stack_addr_push[i] = espvalue;
+        cout << "The address after pushing element " << i << " is " << espvalue << endl;
+
+	}
+	
+	cout << "====================POP===================" << endl;
+
+	_asm
+	{
+		mov espvalue, ESP
+	}
+	cout << "The adress before pop is:  " << espvalue << endl;
+
+	for (i = 0; i < size; i++) {
+		_asm
+		{
+			mov EBX, temp;
+			pop ECX;
+			mov espvalue, ESP;
+			mov temp, ECX;
+		}
+		arr_pop[i] = temp;
+		stack_addr_pop[i] = espvalue;
+		cout << "The address after popping element " << i << " is " << espvalue << endl;
+	}
+
+	
+	cout << "=============================================" << endl;
+
+
+
+	cout << "The data stored onto the stack in order are" << endl;
+	for (i = 0; i < size; i++)
+	{
+		cout << dec << arr_push[i] << " ";
+
+	}
+	cout << endl;
+	cout << "--------------------------------------------" << endl;
+	cout << "The ESP addresses stored in order from the stack are" << endl;
+	for (i = 0; i < size; i++)
+	{
+		cout << hex << stack_addr_push[i] << " ";
+
+	}
+	cout << endl;
+	cout << "--------------------------------------------" << endl;
+	cout << "The values stored in order after being popped off from the stack" << endl;
+	for (i = 0; i < size; i++)
+	{
+		cout << dec << arr_pop[i] << " ";
+
+	}
+	cout << endl;
+
+	cout << "--------------------------------------------" << endl;
+	cout << "The ESP addresses in order popped from the stack" << endl;
+	for (i = 0; i < size; i++)
+	{
+		cout << hex << stack_addr_pop[i] << " ";
+
+	}
+	return 0;
+}
+
