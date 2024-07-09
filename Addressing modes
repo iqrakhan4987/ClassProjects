@@ -1,0 +1,171 @@
+/* Objective:To use and select the appropriate addressing mode for a given task. To exam different data-addressing modes 
+including register addressing (i.e., MOV AX, CX), immediate addressing (i.e., MOV AX, ‘Aa’), direct addressing (i.e., MOV AX, mem16),
+register indirect addressing (i.e., MOV AX, [EBX]), and register relative addressing (i.e., MOV AX, [EBX+2]). */
+
+// The following code is for unsigned integer. 
+#include <iostream>
+#include <Windows.h>
+
+using namespace std;
+
+int main() {
+    // Display year and month
+    SYSTEMTIME a;
+    GetLocalTime(&a);
+    cout << "Year: " << a.wYear << endl;
+    cout << "Month: " << a.wMonth << endl << endl;
+    cout << "Iqra Khan" << endl << endl;
+
+    const int N = 5;  // the dimension of an array
+
+    // Variables declaration and initialization here
+    unsigned int u32_arr[N] = { 0x00000041, 0x00000052, 0xabcd1169, 1234, 'a' };
+    int u0, u1, u2, u3, u4;
+    unsigned int* Ptri = u32_arr;
+    int i; // used as an index
+    int u0_addr, u1_addr, u2_addr, u3_addr, u4_addr;
+
+
+    cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
+    // Display hexadecimal and decimal values of each element of the unsigned int array
+    cout << "--- The value of each element of 32-bit unsigned int array ----\n\n";
+
+    for (i = 0; i < N; i++) {
+        cout << "Element " << i << ": Hex: " << hex << u32_arr[i] << " | Decimal: " << dec << u32_arr[i] << endl;
+    }
+
+    // Display the address of the array in hexadecimal format
+    cout << "Array Address: Hex: 0x" << hex << Ptri << endl;
+
+    //the retrieved value from different address modes  
+    _asm
+    {
+        MOV EBX, Ptri;
+
+        // Element 0 Register Indirect Addressing Modes
+        MOV EAX, [EBX];
+        MOV u0, EAX;
+        MOV u0_addr, EBX;
+
+        // Element 1 Register Relative Addressing 
+        MOV EBX, 4;
+        MOV EAX, u32_arr[EBX];
+        MOV u1, EAX;
+
+        MOV ECX, Ptri
+            ADD ECX, EBX;
+        MOV u1_addr, ECX;
+
+
+        // Element 2 
+        MOV EBX, Ptri;
+        MOV EAX, [EBX + 8];
+        MOV u2, EAX;
+        MOV ECX, 8;
+        ADD ECX, EBX;
+        MOV u2_addr, ECX;
+
+        // Element 3 Immediate Addressing
+
+        MOV EAX, 1234;
+        MOV u3, EAX;
+        MOV EBX, 12
+        MOV ECX, Ptri;
+        ADD ECX, EBX;
+        MOV u3_addr, ECX;
+
+        // Element 4 Indexed Indirect Addressing Mode
+        MOV EBX, Ptri;
+        MOV EAX, [EBX + 16];
+        MOV u4, EAX;
+        ADD EBX, 16;
+        MOV u4_addr, EBX;
+    }
+
+    cout << "Element 0:  0x" << u0 << "  Address:   0x" << hex << u0_addr << endl;
+    cout << "Element 1:  0x" << u1 << "  Address:   0x" << hex << u1_addr << endl;
+    cout << "Element 2:  0x" << u2 << "  Address:   0x" << hex << u2_addr << endl;
+    cout << "Element 3:  " << dec <<  u3 << "  Address:  0x" << hex <<  u3_addr << endl;
+    cout << "Element 4:  " << char(u4) << "  Address:   0x" << u4_addr << endl;
+
+    return 0;
+}// The following code is for unsigned short integer. You just have to change the registers to 2 byte registers. 
+
+#include <iostream>
+#include <Windows.h>
+
+using namespace std;
+
+int main() {
+    // Display year and month
+    SYSTEMTIME a;
+    GetLocalTime(&a);
+    cout << "Year: " << a.wYear << endl;
+    cout << "Month: " << a.wMonth << endl << endl;
+    cout << "Iqra Khan" << endl << endl;
+
+    const short int N = 5;  // the dimension of an array
+
+    // Variables declaration and initialization here
+    unsigned short u32_arr[N] = { 0x0041, 0x0052, 0x1169, 1234, 'a' };
+    unsigned short u0, u1, u2, u3, u4;
+    unsigned short* Ptri = u32_arr;
+    int i; // used as an index
+    int u0_addr, u1_addr, u2_addr, u3_addr, u4_addr;
+
+    cout << "+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
+    // Display hexadecimal and decimal values of each element of the unsigned int array
+    cout << "--- The value of each element of 32-bit unsigned int array ----\n\n";
+
+    for (i = 0; i < N; i++) {
+        cout << "Element " << i << ": Hex: " << hex << u32_arr[i] << " | Decimal: " << dec << u32_arr[i] << endl;
+    }
+
+    // Display the address of the array in hexadecimal format
+    cout << "Array Address: Hex: 0x" << hex << Ptri << endl;
+
+    // The retrieved value from different address modes  
+    _asm
+    {
+        MOV EBX, Ptri;
+
+        // Element 0 Register Indirect Addressing Modes
+        MOV AX, [EBX];
+        MOV u0, AX;
+        MOV u0_addr, EBX;
+
+        // Element 1 Register Relative Addressing 
+        ADD EBX, 2;
+        MOV AX, [EBX];
+        MOV u1, AX;
+        MOV u1_addr, EBX;
+
+        // Element 2 
+        MOV EBX, Ptri;
+        ADD EBX, 4;
+        MOV AX, [EBX];
+        MOV u2, AX;
+        MOV u2_addr, EBX;
+
+        // Element 3 Immediate Addressing
+        MOV AX, 1234;
+        MOV u3, AX;
+        ADD EBX, 6;
+        MOV u3_addr, EBX;
+
+        // Element 4 Indexed Indirect Addressing Mode
+        MOV EBX, Ptri;
+        ADD EBX, 8;
+        MOV AX, [EBX];
+        MOV u4, AX;
+        MOV u4_addr, EBX;
+    }
+
+    cout << "Element 0:  0x" << hex << u0 << "  Address:   0x" << hex << u0_addr << endl;
+    cout << "Element 1:  0x" << hex << u1 << "  Address:   0x" << hex << u1_addr << endl;
+    cout << "Element 2:  0x" << hex << u2 << "  Address:   0x" << hex << u2_addr << endl;
+    cout << "Element 3:  " << dec << u3 << "  Address:   0x" << hex << u3_addr << endl;
+    cout << "Element 4:  " << hex << u4 << "  Address:   0x" << hex << u4_addr << endl;
+
+    return 0;
+}
