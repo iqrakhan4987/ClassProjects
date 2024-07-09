@@ -1,0 +1,121 @@
+//Using in-line assembly to swap the contents of a variable.
+// Header File
+#include <iostream> 
+#include <bitset>
+using namespace std;
+
+void display(char rl, char rh, short r, char sl[], char sh[], char s[])
+{
+	//Display characters
+	cout << sh << rh << "\t\t"
+		<< sl << rl << endl;
+
+	//Display a decimal value of each character
+	cout << sh << dec << (rh & 0xff) << "\t\t"
+		<< sl << dec << (rl & 0xff) << endl;
+
+	//Display a hexadecimal value of each character
+	cout << sh << "0x" << hex << (0xff & rh) << "\t"
+		<< sl << "0x" << hex << (0xff & rl) << "\t"
+		<< s << "0x" << hex << r << endl;
+
+	//Bitset charL, charH, and charX are sets that store binary bits of rl,rh, and r
+	bitset<8 * sizeof(rl)>  charL(rl);
+	bitset<8 * sizeof(rh)>  charH(rh);
+	bitset<8 * sizeof(r)>   charX(r);
+
+	//Display a binary value of each character
+	cout << sh << charH << "\t"
+		<< sl << charL << "\t"
+		<< s << charX << endl;
+}
+
+// Main 
+#include "Exe3.h"
+#include <iostream> 
+#include <Windows.h> 
+
+using namespace std;
+
+int main() {
+
+	//Declare variables
+	char temp;
+	char r1, r2;
+	short int r;
+
+	//A char array stores a simple array of chars
+	char strbl[] = "BL = ";
+	char strbh[] = "BH = ";
+	char strbx[] = "BX = ";
+
+	char stral[] = "AL = ";
+	char strah[] = "AH = ";
+	char strax[] = "AX = ";
+
+	cout << "A. Swap bytes in two general registers of BL, BH with temp\n";
+	cout << "========= Before swapping ========== " << endl;
+	_asm
+	{
+		MOV BL, 'a';
+		MOV BH, 'A';
+		MOV r1, BL;
+		MOV r2, BH;
+		MOV r, BX;
+	}
+
+	//Show the content of registers in the format of 
+	//char, hexadecimal, and decimal before swapping
+	display(r1, r2, r, strbl, strbh, strbx);
+
+	//In-line code to swap bytes in two general registers of CL, CH with XCHG
+	//Find errors inside asm{} and make necessary change.
+	_asm
+	{
+		MOV temp, BH;
+		MOV BH, BL;
+		MOV BL, temp;
+		MOV r1, BL;
+		MOV r2, BH;
+		MOV r, BX;
+	}
+
+	//Show the content of registers in the format of 
+	//char, hexadecimal, and decimal after swapping
+	cout << "========== After swapping ========== " << endl;
+	display(r1, r2, r, stral, strbh, strbx);
+
+	cout << "=======================================================" << endl;
+
+	cout << "B. Swap bytes in two general registers of AL, AH with temp \n";
+	//Inline code to copy values into registers of DL, DH
+	_asm
+	{
+		MOV AL, 'a';
+		MOV AH, 'A';
+		MOV r1, AL;
+		MOV r2, AH;
+		MOV r, AX;
+	}
+	//Show the content of registers in the format of 
+	//char, hexadecimal, and decimal before swapping
+	cout << "======== Before swapping ========= " << endl;
+	display(r1, r2, r, stral, strah, strax);
+//using temporary variable 
+	_asm
+	{
+		MOV AL, 'a';
+		MOV AH, 'B';
+		MOV temp, AH;
+		MOV AH, AL;
+		MOV AL, temp;
+		MOV r1, AL;
+		MOV r2, AH;
+		MOV r, AX;
+	}
+	//Show the content of registers in the format of 
+	//char, hexadecimal, and decimal after swapping
+	cout << "========== After swapping ======== " << endl;
+	display(r1, r2, r, stral, strah, strax);
+	return 0;
+}
