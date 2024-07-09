@@ -1,0 +1,169 @@
+//This program performs logical operations (AND,OR, XOR, NOT) on variables.
+/*********************************************************
+* Exe6.h
+*********************************************************/
+#include <iostream> 
+#include <bitset>
+using namespace std;
+void displayBinaryOperation(unsigned short r1, unsigned short r2, unsigned short result, char s[]);
+void AND_operation(unsigned short int  r1, unsigned short int r2);
+void OR_operation(unsigned short int  r1, unsigned short int r2);
+void XOR_operation(unsigned short int  r1, unsigned short int r2);
+void Not_operation(unsigned short r1);
+void mainMenu();
+
+//Design the menu
+void mainMenu()
+{
+    cout << "1. Input two 16-bit unsigned number operands and perform an AND(&) operation.\n"
+        << "   Display the operands and the result in binary format. " << endl;
+    cout << "2. Input two 16-bit unsigned number operands and perform an OR (|) operation.\n"
+        << "   Display the operands and the result in binary format." << endl;
+    cout << "3. Input two 16-bit unsigned number operands and perform a XOR (^) operation.\n"
+        << "   Display the operands and the result in binary format." << endl;
+    cout << "4. Input a 16-bit unsigned number operand and perform a NOT (~) operation.\n"
+        << "   Display the operand and the result in binary format." << endl;
+    cout << "5. Exit" << endl;
+}
+
+
+
+void AND_operation(unsigned short r1, unsigned short r2)
+{
+    unsigned short r;
+    char str[] = "AND";
+    // AND operation 
+    r = r1 & r2;
+    // your code to  displayBinaryOperation
+    displayBinaryOperation(r1, r2, r, str);
+}
+
+void OR_operation(unsigned short int  r1, unsigned short int r2)
+{
+    unsigned short r;
+    char str[] = "OR";
+    // OR operation 
+    r = r1 | r2;
+    // your code to  displayBinaryOperation
+    displayBinaryOperation(r1, 0, r, str);
+
+}
+void XOR_operation(unsigned short int  r1, unsigned short int r2)
+{
+
+    unsigned short r;
+    char str[] = "XOR";
+    // XOR operation 
+    r = r1 ^ r2;
+    // your code to  displayBinaryOperation
+    displayBinaryOperation(r1, r2, r, str);
+}
+
+void Not_operation(unsigned short r1)
+{
+    unsigned short r;
+    char str[] = "NOT";
+    // XOR operation 
+    r = ~r1;
+    // your code to  displayBinaryOperation
+    displayBinaryOperation(r1, 0, r, str);
+}
+
+void displayBinaryOperation(unsigned short r1, unsigned short r2, unsigned short result, char s[])
+{
+    // A bitset to hold 16-bits
+    bitset<16> operant1_Bits(r1);
+    // A bitset to hold 16-bits
+    bitset<16> operant2_Bits(r2);
+    // A bitset to hold 16-bits 
+    bitset<16> result_Bits(result);
+
+    // cout << "Perform an AND operation:" << endl;
+    cout << "Perform the logical bitwise " << s << " operation: " << endl;
+    cout << "\t\t" << operant1_Bits << endl;
+    cout << "\t " << s << "\t" << operant2_Bits << endl;
+    cout << "------------------------------------------\n";
+    cout << "\t\t" << result_Bits << endl;
+    cout << "==========================================\n";
+
+}
+
+/**************************************************
+*      Exercise_6.cpp
+**************************************************/
+
+#include <iostream> 
+#include <Windows.h>  
+#include <bitset>
+#include "Exe6.h"
+
+using namespace std;
+
+int user;
+
+unsigned short r1, r2; // Global variables to store user input
+
+
+
+int InputNum()
+{
+    cout << "Enter the first 16-bit number in hexadecimal format (for example, 12ae): ";
+    cin >> hex >> r1;
+    cout << "Enter the second 16-bit number in hexadecimal format (for example, ff00): ";
+    cin >> hex >> r2;
+    return 0; // Specify a return value for the function
+}
+
+int main()
+{
+    // Display year and month  
+    SYSTEMTIME a;
+    GetLocalTime(&a);
+    cout << "Year: " << a.wYear << endl;
+    cout << "Month: " << a.wMonth << endl << endl;
+    cout << "Iqra Khan" << endl;
+
+
+
+    cout << "Choose one of the following options" << endl;
+    mainMenu(); // Display the menu here
+    cin >> user;
+
+    while (user != 5)
+    {
+        switch (user)
+        {
+        case 1:
+            cout << "Performing AND bitwise operation" << endl;
+            InputNum();
+            AND_operation(r1, r2);
+            break;
+        case 2:
+            cout << "Performing OR bitwise operation" << endl;
+            InputNum();
+            OR_operation(r1, r2);
+            break;
+        case 3:
+            cout << "Performing XOR bitwise operation" << endl;
+            InputNum();
+            XOR_operation(r1, r2);
+            break;
+        case 4:
+            cout << "Performing NOT bitwise operation" << endl;
+            cout << "Enter the 16-bit number in hexadecimal format (for example, 12ae): ";
+            cin >> hex >> r1;
+            Not_operation(r1);
+            break;
+        case 5:
+            // Exit
+            cout << "You can exit." << endl;
+            break;
+        default:
+            cout << "Please try again"<< endl;
+        }
+        cout << "Choose another option " << endl;
+        cin >> user;
+
+    }
+    return 0;
+}
