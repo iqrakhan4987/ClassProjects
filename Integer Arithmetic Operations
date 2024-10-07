@@ -1,0 +1,307 @@
+#include <iostream>  
+#include <Windows.h>  
+#include <time.h> 
+using namespace std;
+
+
+// Display Menu
+void menu_option();
+
+// Addition for 16-bit signed integers   
+void addition(short int x, short int y);
+
+// Subtraction for 16-bit signed integers  
+void subtraction(short int x, short int y);
+
+void mutiplication(short int x, short int y);
+
+// incrementation for 16-bit signed integers  
+void increment(short int x, short int n);
+
+// decrement for 16-bit signed integers  
+void decrement(short int x, short int n);
+
+//Multiplication for 16-bit signed integers m
+void mutiplication(short int x, short int y);
+
+void division(int x, short int y);
+
+int main() {
+    // Display year and month   
+    SYSTEMTIME a;
+    GetLocalTime(&a);
+    cout << "Year: " << a.wYear << endl;
+    cout << "Month: " << a.wMonth << endl << endl;
+    cout << "NAME " << endl << endl;
+
+    //Declare variables here  
+    char ch0, ch1;
+    char choice;
+    signed short r1, r2;
+    unsigned short ur1, ur2;
+    // your variables declared here  
+cout << "Signed Integer Arithmetic Operation(16 - bit)\n";
+menu_option();
+
+    do {
+        
+        cin >> ch1;
+        cout << endl << endl;
+        switch (ch1)
+        {
+        case 'a':
+        {
+            cout << "Input two signed number operands in decimal format\n";
+            cin >> r1 >> r2; //input two signed numbers 
+            addition(r1, r2);
+            cout << "==========================================\n";
+            break;
+        }
+        case 'b':
+        {
+            cout << "Input two signed number operands in decimal format\n";
+            cin >> r1 >> r2; //input two signed numbers 
+            subtraction(r1, r2);
+            cout << "==========================================\n";
+            break;
+        }
+        case 'c':
+        {
+
+            //Add your code here 
+            cout << "Input a signed number operand in decimal format\n";
+            cout << "Input an incremented signed number operand in decimal format\n";
+            cin >> r1 >> r2; //input two signed numbers 
+            cout << "(Before Increment)The signed number in decimal format is:     " << dec << r1 << endl;
+            cout << "(Before Increment)The signed number in hexadecimal format is: 0x" << hex << r1 << endl;
+            increment(r1, r2);
+            break;
+
+        }
+        case 'd':
+        {
+            //Add your code here 
+            cout << "Input a signed number operand in decimal format\n";
+            cout << "Input an decremented signed number operand in decimal format\n";
+            cin >> r1 >> r2; //input two signed numbers 
+            cout << "(Before Decrement)The signed number in decimal format is:     " << dec << r1 << endl;
+            cout << "(Before Decrement)The signed number in hexadecimal format is: 0x" << hex << r1 << endl;
+            decrement(r1, r2);
+            break;
+
+        }
+        case 'e':
+        {
+            cout << "Input two signed number operands in decimal format\n";
+            cin >> r1 >> r2; //input two signed numbers 
+            mutiplication(r1, r2);
+            break;
+        }
+        case 'f':
+        {
+            cout << "Input a 32 bit signed number in decimal format\n";
+            cout << "Input a 16 bit signed number in decimal format\n";
+            cin >> r1 >> r2;
+            division(r1, r2);
+            break;
+        }
+        case 'g': {
+            cout << "Exiting the program.\n";
+            break;
+        }
+        default: {
+            cout << "Invalid choice. Please select a valid option.\n";
+            break;
+        }
+      }
+        cout << endl << endl;
+    } 
+    while (ch1 != 'g');
+
+        return 0;
+  }
+
+
+void menu_option() {
+    cout << "Submenu - input your choice\n";
+    cout << "a, Input two 16-bit signed number operands for addition, and display \n"
+        << "the sum in the format of decimal and hexadecimal number, respectively.\n";
+    cout << "b, Input two 16-bit signed number operands for subtraction and display \n"
+        << "the difference in the format of decimal and hexadecimal number, respectively.\n";
+    cout << "c, Input a 16-bit signed number operand, and display \n"
+        << "the number before and after the increment in the format of "
+        << "decimal and hexadecimal number, respectively.\n";
+    cout << "d, Input a 16-bit signed number operand, and display \n"
+        << "the number before and after the decrement in the format of "
+        << "decimal and hexadecimal number, respectively.\n";
+    cout << "e, Input two 16-bit signed number operands for mutiplication and display \n"
+        << "the product in the format of decimal and hexadecimal number, respectively.\n";
+    cout << "f, Input one 32-bit signed number operand as dividend and one 16 bit signed number as divisor and display \n"
+        << "the quotient and remainder in the format of decimal and hexadecimal number, respectively.\n";
+    cout << "Exit" << endl;
+}
+// Addition for 16-bit signed integers   
+void addition(short int x, short int y)
+{
+    short int r;
+    _asm
+    {
+        MOV AX, x;
+        MOV BX, y;
+        ADD AX, BX;
+        MOV r, AX;
+    }
+    cout << "Decimal Sum: ";
+    cout << dec << x << " + " << dec << y << " = " << dec << r << endl;
+    cout << "Hexadecimal Sum: 0x"
+        << hex << x << " + 0x" << hex << y << " = 0x" << hex << r << endl;
+}
+
+//Subtraction for 16-bit signed integers  
+void subtraction(short int x, short int y)
+{
+    short int r;
+    _asm
+    {
+        MOV AX, x;
+        MOV BX, y;
+        SUB AX, BX;
+        MOV r, AX;
+    }
+
+    cout << "Decimal subtraction: ";
+    cout << dec << x << " - " << dec << y << " = " << dec << r << endl;
+    cout << "Hexadecimal subtraction: 0x"
+        << hex << x << " - 0x" << hex << y << " = 0x" << hex << r << endl;
+}
+
+// increment for 16-bit signed integers  
+// LOOP according ECX (CX) counter register
+// Counter register ECX (CX) is used as a loop counter
+// The ECX, CX registers store the loop count in iterative operations
+void increment(short int x, short int n)
+{
+    short int r;
+    //your code using INC instruction
+
+    _asm
+    {
+        MOV AX, x;
+        MOV CX, n;
+    Label1:
+        INC AX;
+        LOOP  Label1; // Kind of like a loop where it stops once CX (counter) is 0
+        MOV r, AX;
+    }
+    cout << "After Increment:" << endl;
+    cout << "Decimal Sum: " <<  dec << x << " + " << dec << n << " = " << dec << r << endl;
+    cout << "Hexadecimal Sum: 0x"
+        << hex << x << " + 0x" << hex << n << " = 0x" << hex << r << endl;
+}
+
+// decrement for 16-bit signed integers  
+void decrement(short int x, short int n)
+{
+    short int r;
+    _asm
+    {
+        MOV AX, x;
+        MOV CX, n;
+    Label1:
+        DEC AX;
+        LOOP  Label1; // Kind of like a loop where it stops once CX (counter) is 0
+        MOV r, AX;
+    }
+    cout << "After Decrement:" << endl;
+    cout << "Decimal Sum: " << dec << x << " - " << dec << n << " = " << dec << r << endl;
+    cout << "Hexadecimal Difference: 0x"
+        << hex << x << " - 0x" << hex << n << " = 0x" << hex << r << endl;
+}
+
+//DX is known as the data register. 
+//It is also used with AX register along with DX 
+//for multiply and divide operations involving large values.
+//IMUL BX;  DX::AX <= AX * BX
+void mutiplication(short int x, short int y)
+{
+    short int lower, upper;
+    int prod;  //upper,lower
+    prod = x * y;
+    cout << "Decimal mutiplication: "
+        << dec << x << " * " << dec << y << " = "
+        << dec << prod << endl;
+    cout << "Hexadecimal mutiplication: 0x"
+        << hex << x << " * 0x" << hex << y << " = 0x"
+        << hex << prod << endl;
+
+    //IMUL BX;  
+    //prod = DX::AX <= AX * BX
+    _asm
+    {
+        MOV AX, x;
+        MOV BX, y;
+        IMUL BX;
+        MOV lower, AX;
+        MOV upper, DX;
+
+        //prod = DX::AX
+        //you code to pack AX and DX into EDX
+        SHL EDX, 16;             // Shift DX left by 16 bits
+        AND EAX, 0x0000ffff;
+        OR EDX, EAX;             // Combine upper and lower parts into EDX
+        MOV prod, EDX;
+    }
+
+    cout << "After Inline asm code" << endl;
+    cout << "Hexadecimal mutiplication: 0x"
+        << hex << x << " * 0x" << hex << y << " = 0x"
+        << hex << upper << hex << lower << endl;
+    cout << "Decimal mutiplication: "
+        << dec << x << " * " << dec << y << " = "
+        << dec << prod << endl;
+}
+
+
+void division(int x, short int y)
+{
+    short int quo, rem;
+    
+    int div = x / y;
+    cout << "Decimal division: "
+        << dec << x << " / " << dec << y << " = "
+        << dec << div << endl;
+    cout << "Hexadecimal division: 0x"
+        << hex << x << " / 0x" << hex << y << " = 0x"
+        << hex << div << endl;
+    // IDIV  AX = Q(DX::AX/ op16)  
+     //       DX = R(DX::AX % op16)
+    _asm
+    { 
+        AND EDX, 0x00000000;
+        MOV EDX, x;
+
+
+        // MOV upper part of x into DX and lower part of x into AX
+        AND EDX, 0x0000ffff; // Separate lower byte 
+        AND EAX, 0x00000000;  //Clear EAX so that I can move information into it
+        OR EAX, EDX;  // AX has lower byte of x now
+
+        // Now moving upper part of x into DX
+
+        MOV EDX, 0;
+        MOV EDX, x;
+        AND EDX, 0xffff0000;  // Only has upper part of x
+        SHR EDX, 16;
+
+        // AX and DX has the lower and upper part of x. So, now we can divide
+        //MOV CX, y;
+        IDIV y; // This means that I am dividing DX::AX / y  Quotient is in AX and Remainder is in DX
+        MOV quo, AX;
+        MOV rem, DX;
+    }
+    cout << "After Inline asm code" << endl;
+    cout << "Hexadecimal Division: 0x"
+        << hex << x << " / 0x" << hex << y << " = " "Quoteint: 0x" << hex << quo << "  Remainder: 0x" << hex << rem << endl;
+    cout << "Decimal Division: " << " Quotient: " << dec << quo << "   Remainder: " << dec << rem;
+
+}
